@@ -1,0 +1,31 @@
+# From https://raw.githubusercontent.com/anvil-works/anvil-runtime/master/packaging/app-server/Dockerfile
+FROM python:3
+
+RUN apt-get -yyy update && \
+    apt-get -yyy install software-properties-common && \
+    wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
+    add-apt-repository 'deb https://apt.corretto.aws stable main' && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    (dpkg -i google-chrome-stable_current_amd64.deb || apt install -y --fix-broken) && \
+    rm google-chrome-stable_current_amd64.deb && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get -yyy update && \
+    apt-get -yyy install java-1.8.0-amazon-corretto-jdk ghostscript && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir "anvil-app-server==1.6.0"
+RUN anvil-app-server || true
+
+RUN mkdir /anvil-data && \
+    mkdir /apps
+
+RUN useradd --create-home anvil
+RUN chown -R anvil:anvil /anvil-data
+USER anvil
+
+EXPOSE 3030/tcp
+WORKDIR /apps
+ENTRYPOINT ["anvil-app-server", "--data-dir", "/anvil-data", "--app", "MainApp"]

@@ -1,0 +1,56 @@
+allow_embedding: false
+package_name: Material_Design_1
+db_schema:
+- name: Providers
+  id: 148532
+  python_name: providers
+  columns:
+    63VfP1JrMt8=:
+      name: created
+      type: datetime
+      admin_ui: {order: 3, width: 200}
+    gOyvB6eoXgY=:
+      name: users
+      type: liveObject
+      backend: anvil.tables.Row
+      admin_ui: {order: 0, width: 200}
+      table_id: 148527
+    sFdXtPCzTdA=:
+      name: display_name
+      type: string
+      admin_ui: {order: 1, width: 200}
+    yfv+w5o2s+Y=:
+      name: config
+      type: string
+      admin_ui: {order: 2, width: 200}
+  access: {python_name: providers, app_id: RQPID2OHG4B46QLT, server: full, client: none,
+    table_mapping_name: null, table_mapping_id: null, table_id: 148532}
+- name: Users
+  id: 148527
+  python_name: users
+  columns:
+    X6qXImP8JkY=:
+      name: email
+      type: string
+      admin_ui: {order: 0, width: 200}
+    fS+5nFLR0gE=:
+      name: enabled
+      type: bool
+      admin_ui: {order: 1, width: 100}
+  access: {python_name: users, app_id: RQPID2OHG4B46QLT, server: full, client: none,
+    table_mapping_name: null, table_mapping_id: null, table_id: 148527}
+name: Material Design 1
+startup_form: Form1
+runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox}
+metadata: {}
+services:
+- source: /runtime/services/tables.yml
+  client_config: {}
+  server_config: {auto_create_missing_columns: false}
+- source: /runtime/services/anvil/users.yml
+  client_config: {allow_signup: false, enable_automatically: true, use_email: true,
+    confirm_email: true, use_google: true}
+  server_config: {user_table: users}
+- source: /runtime/services/google.yml
+  client_config: {}
+  server_config: {}
